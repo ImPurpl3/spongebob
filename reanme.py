@@ -1,11 +1,13 @@
 import os
 import tkinter as tk
 import json
+import sys
 
 from tkinter.filedialog import askdirectory
 from tmdbv3api import TMDb, TV, Season
 
-tokenfile = open('C:/Users/Lenovo/Desktop/Stuff/Coding/spongebob/token.json')
+runpath = os.path.dirname(sys.argv[0])  
+tokenfile = open(f'{runpath}/token.json')
 tokendata = json.load(tokenfile)
 
 # set the movie database variables
@@ -38,7 +40,7 @@ for filename in os.listdir(path):    # for each episode in the season:
     f = os.path.join(path, filename) # lose 168 brain cells
     fl = os.path.splitext(filename)  # get,
     ff = fl[0]                       # file extension
-    
+
     if os.path.isfile(f): # lose 24 more brain cells
         epname = ff[35:]  # remove first 35 characters of filename (because they were named "SpongeBob Squarepants - Season x - episodename.avi")
         epfile = f"{path}/{filename}" # setup file name to match episode name
