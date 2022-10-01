@@ -6,9 +6,9 @@ import sys
 from tkinter.filedialog import askdirectory
 from tmdbv3api import TMDb, TV, Season
 
-runpath = os.path.dirname(sys.argv[0])  
-tokenfile = open(f'{runpath}/token.json')
-tokendata = json.load(tokenfile)
+runpath = os.path.dirname(sys.argv[0])    # get path from where script is running
+tokenfile = open(f'{runpath}/token.json') # open token json file
+tokendata = json.load(tokenfile)          # load token json file
 
 # set the movie database variables
 tmdb = TMDb()
