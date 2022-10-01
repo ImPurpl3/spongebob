@@ -7,11 +7,16 @@ Spongebob Episode Renamer for Plex to ingest
 * Renames the file appropiately to Plex's Standards
 
 # Requirements
-* Tkinter
-* TMDb API Key
+* TMDb API Key - https://www.themoviedb.org/signup
 * More than 4 Functioning Brain Cells
-* tmdb3api python lib
+* tmdb3api python lib - https://github.com/AnthonyBloomer/tmdbv3api
 * Path to SpongeBob Seasons and Episode File Names must be formated like this (Season Number where there is X, and Episode Name where there is Z)
 ```
 C:/Path/To/TV Shows/SpongeBob SquarePants/Season X/SpongeBob SquarePants - Season X - Z
 ```
+
+# Things to Note
+* This is made so that Plex can look at my SpongeBob Seasons and ingest them properly
+* I made this in 1 hour, so if the code is bad and hard to read, thats probably why
+* I installed 7 programs before just making my own script because they all sucked (pay wall, couldn't match just from episode name)
+* You will have to add your TMDb API Key to the token.json file for stuff to work
