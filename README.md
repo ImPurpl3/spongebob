@@ -20,3 +20,7 @@ C:/Path/To/TV Shows/SpongeBob SquarePants/Season X/SpongeBob SquarePants - Seaso
 * I made this in 1 hour, so if the code is bad and hard to read, thats probably why
 * I installed 7 programs before just making my own script because they all sucked (pay wall, couldn't match just from episode name)
 * You will have to add your TMDb API Key to the token.json file for stuff to work
+
+# Example Use
+If the file name of my SpongeBob Squarepants Season 2 Episode Name "Squidville" is "SpongeBob SquarePants - Season 2 - Squidville.avi",
+It will rename the file to "SpongeBob SquarePants - s02e17 - Squidville.avi" so that Plex can read it :)
