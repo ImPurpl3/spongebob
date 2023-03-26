@@ -5,6 +5,7 @@ import sys
 
 from tkinter.filedialog import askdirectory
 from tmdbv3api import TMDb, TV, Season
+from difflib import SequenceMatcher
 
 runpath = os.path.dirname(sys.argv[0])    # get path from where script is running
 tokenfile = open(f'{runpath}/token.json') # open token json file
@@ -35,20 +36,43 @@ for l in ss.episodes: # for each entry in the episodes for that season of bob l'
 
 sortedProperDict = dict(sorted(properEPdict.items())) # sort dict to make it easier to match later
 
+seasStr = f"Season {ssnum}"
+
 epdict = {} # init local side dictionary
 for filename in os.listdir(path):    # for each episode in the season:
     f = os.path.join(path, filename) # lose 168 brain cells
-    fl = os.path.splitext(filename)  # get,
-    ff = fl[0]                       # file extension
+    fl = os.path.splitext(filename)  # get file extension
+    ff = fl[0]                       # get file name
 
-    if os.path.isfile(f): # lose 24 more brain cells
+    if os.path.isfile(f) and seasStr in ff: # lose 24 more brain cells; run through if file and if wrong format is detected
+        #print(f"Found Wrong Format! - {ff}")
         epname = ff[35:]  # remove first 35 characters of filename (because they were named "SpongeBob Squarepants - Season x - episodename.avi")
         epfile = f"{path}/{filename}" # setup file name to match episode name
-        epdict[f"{epname}"] = epfile  # file name mathc to episode name
+        epdict[f"{epname}"] = epfile  # file name match to episode name
+
+print(epdict)
+print(epdict.keys())
 
 for key in sortedProperDict.keys():
-    if key in epdict.keys(): # match keys
-        pth, filenm = os.path.split(epdict[key]) # split path and file name
-        fleext = os.path.splitext(epdict[key])   # file extension
-        os.rename(epdict[key], f"{pth}/{sortedProperDict[key]}{fleext[1]}") # rename the matched file
-        print(f"{epdict[key]} -> {pth}/{sortedProperDict[key]}{fleext[1]}") # print changes
+    #print(f"On index: {key}")
+    maxMatchRatio = 0
+    maxMatchKey = ""
+    for dbkey in epdict.keys():
+        matchRatio = SequenceMatcher(None, key, dbkey).ratio()
+
+        if matchRatio > maxMatchRatio:
+            maxMatchRatio = matchRatio
+            maxMatchKey = dbkey
+
+    if maxMatchRatio >= 0.75 and maxMatchKey in epdict.keys():
+        print(f"New Match! : {key} - {maxMatchKey} @ {maxMatchRatio}")
+        pth, filenm = os.path.split(epdict[maxMatchKey]) # split path and file name
+        fleext = os.path.splitext(epdict[maxMatchKey])   # file extension
+        correctFileName = f"{pth}/{sortedProperDict[key]}{fleext[1]}"
+        try:
+            os.rename(epdict[maxMatchKey], correctFileName) # rename the matched file
+        except OSError:
+            correctedFilename = correctFileName.replace("?", "")
+            os.rename(epdict[maxMatchKey], correctedFilename) # rename the matched file
+
+        print(f"{epdict[maxMatchKey]} -> {pth}/{sortedProperDict[key]}{fleext[1]}") # print changes
